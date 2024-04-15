@@ -11,6 +11,7 @@ COPY .env /app/
 RUN python3.10 -m pip install --upgrade pip
 RUN pip install loguru
 RUN pip install python-dotenv
+RUN pip install openpyxl
 
 WORKDIR /app
 
