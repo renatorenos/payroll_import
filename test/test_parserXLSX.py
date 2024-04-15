@@ -3,4 +3,6 @@ from src import parserXLSX
 
 file = 'test/Ferias022024.xlsx'
 
-print(parserXLSX.parserFile(file))
+print(type(file))
+
+print(parserXLSX.parserFile_list(file))
