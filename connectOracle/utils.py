@@ -15,7 +15,7 @@ def check_connection() -> str:
     cursor.close()
     return version
 
-def sql_query(query : str) -> list:
+def sql_query(query : str) -> tuple:
     oracledb.init_oracle_client()
     connection = oracledb.connect(  user=os.getenv("DB_USER"), 
                                 password=os.getenv("DB_PASSWORD"), 
@@ -23,7 +23,7 @@ def sql_query(query : str) -> list:
     cursor  = connection.cursor()
 
     cursor.execute(query)
-    result = cursor.fetchall()
+    result = cursor.fetchone()
 
     cursor.close()
     connection.close
