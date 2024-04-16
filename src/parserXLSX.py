@@ -25,11 +25,13 @@ def parserFile_dict(file : str) -> dict:
             logger.error(error)
             raise Exception("Ocorreu um erro => Matricula em branco")
         value = str(ws[valueCol + str(i)].value).replace(" ", "").replace(".","").replace(",","")
-        
-        logger.debug(f'[{i}] = {str(key).replace(" ", "")} : {value}')
+        k = str(key).replace(" ", "")
 
-        dic.update({ str(key).replace(" ", "") : value })
-    
+        if k in dic:
+            value = str(int(dic[k]) + int(value))
+        
+        logger.debug(f'[{i}] = {k} : {value}')
+        dic.update({k : value })
     return dic
 
 def parserFile_list(file : str) -> list:
@@ -60,5 +62,4 @@ def parserFile_list(file : str) -> list:
 
         logger.debug(f'[{i}] = {k} : {value}')
         records.append((k, value))
-    
     return records

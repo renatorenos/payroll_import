@@ -5,4 +5,5 @@ file = 'test/Ferias022024.xlsx'
 
 print(type(file))
 
-print(parserXLSX.parserFile_list(file))
+# print(parserXLSX.parserFile_list(file))
+print(parserXLSX.parserFile_dict(file))
