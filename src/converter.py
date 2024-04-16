@@ -6,7 +6,7 @@ import sys
 from connectOracle import utils
 from loguru import logger
 
-def makeFile(name, seq, value):
+def makeFile(seq : str, value : str) -> str:
 
     #data 6
     year = date.datetime.now().year
@@ -75,53 +75,26 @@ def makeFile(name, seq, value):
 
     return content
 
-def runConverter(file):
+def runConverter(file : str) -> str:
     logger.add("log/app.log", rotation="5 MB", level="INFO")
     logger.info(file)
 
     try:
-        dicFile = parserXLSX.parserFile(file)
+        dicFile = parserXLSX.parserFile_dict(file)
     except Exception as e:
         logger.exception(f"Ocorreu um erro: {e} ->" + " Matricula em branco")
         sys.exit(1)
 
-    dictSeq = connectDB.selectSeqUser(dicFile)
-
-    content = ""
-    for kFile in dicFile.keys():
-        name = kFile
-        value = dicFile.get(kFile)
-        seq = dictSeq.get(kFile)
-        if seq is None:
-            content += "Matricula = " + name + " - Nao encontrado\n"
+    content = ''
+    for matriculation in dicFile.keys():
+        query_result = utils.sql_query("select distinct seqpessoa from ge_pessoa where matricula = " +  matriculation)
+        
+        if query_result is None:
+            content += "Matricula = " + matriculation + " -> Nao encontrado\n"
+            break
         else:
-            content += makeFile(name, seq, value)
+            seq = str(query_result).replace("(","").replace(")","").replace(",","")
+            content += makeFile(seq, dicFile.get(matriculation))
 
     logger.info("Sucesso!")
     return content
-
-def runConverterList(file : str):
-    logger.add("log/app.log", rotation="5 MB", level="INFO")
-    logger.info(file)
-
-    try:
-        list_records = parserXLSX.parserFile_list(file)
-    except Exception as e:
-        logger.exception(f"Ocorreu um erro: {e} ->" + " Matricula em branco")
-        sys.exit(1)
-
-
-    # dictSeq = connectDB.selectSeqUser(dicFile)
-
-    # content = ""
-    # for kFile in dicFile.keys():
-    #     name = kFile
-    #     value = dicFile.get(kFile)
-    #     seq = dictSeq.get(kFile)
-    #     if seq is None:
-    #         content += "Matricula = " + name + " - Nao encontrado\n"
-    #     else:
-    #         content += makeFile(name, seq, value)
-
-    # logger.info("Sucesso!")
-    return list_records
