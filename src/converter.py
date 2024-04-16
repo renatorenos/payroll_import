@@ -1,6 +1,6 @@
 import settings
 import datetime as date
-import parserXLSX
+from src import parserXLSX
 import calendar
 import sys
 from connectOracle import utils
@@ -99,3 +99,29 @@ def runConverter(file):
 
     logger.info("Sucesso!")
     return content
+
+def runConverterList(file : str):
+    logger.add("log/app.log", rotation="5 MB", level="INFO")
+    logger.info(file)
+
+    try:
+        list_records = parserXLSX.parserFile_list(file)
+    except Exception as e:
+        logger.exception(f"Ocorreu um erro: {e} ->" + " Matricula em branco")
+        sys.exit(1)
+
+
+    # dictSeq = connectDB.selectSeqUser(dicFile)
+
+    # content = ""
+    # for kFile in dicFile.keys():
+    #     name = kFile
+    #     value = dicFile.get(kFile)
+    #     seq = dictSeq.get(kFile)
+    #     if seq is None:
+    #         content += "Matricula = " + name + " - Nao encontrado\n"
+    #     else:
+    #         content += makeFile(name, seq, value)
+
+    # logger.info("Sucesso!")
+    return list_records
