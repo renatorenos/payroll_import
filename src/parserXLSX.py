@@ -2,6 +2,13 @@ from openpyxl import load_workbook
 from loguru import logger
 
 def parserFile_dict(file : str) -> dict:
+    """
+        Função que extrai os valores do xlsx .
+    Args:
+        param1: conteúdo do arquivo xlsx.
+    Returns:
+        Retorna um dicionários contendo {matricula : valor}.
+    """
     wb = load_workbook(filename= file, data_only=True)
     ws = wb['Planilha1']
 
@@ -26,6 +33,13 @@ def parserFile_dict(file : str) -> dict:
     return dic
 
 def parserFile_list(file : str) -> list:
+    """
+        Função que extrai os valores do .xlsx.
+    Args:
+        param1: conteúdo do arquivo xlsx.
+    Returns:
+        Retorna uma lista contendo as tuplas (matricula, valor) .
+    """
     wb = load_workbook(filename= file, data_only=True)
     ws = wb['Planilha1']
 
